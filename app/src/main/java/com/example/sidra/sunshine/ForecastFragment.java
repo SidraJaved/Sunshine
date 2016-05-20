@@ -57,13 +57,9 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         setHasOptionsMenu(true);
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("Today-Sunny-88/63");
-        list.add("Tomorrow-Sunny-75/45");
-        list.add("Thur-Sunny-67/65");
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, list);
+        arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, new ArrayList<String>());
         ListView listView = (ListView) rootView.findViewById(R.id.list_item_forecast);
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -87,49 +83,58 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh: {
-                FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
-
-                GPSTracker gps = new GPSTracker(getActivity());
-                double latitude = gps.getLatitude();
-                double longitude = gps.getLongitude();
-
-                ArrayList<String> passing = new ArrayList<String>();
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                String postCode = sharedPref.getString("postCode", "");
-                String city = sharedPref.getString("city", "");
-                Geocoder geoCoder = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
-                List<Address> address = null;
-                if(city == "" || postCode == ""){
-                if (geoCoder != null) {
-                    try {
-                        address = geoCoder.getFromLocation(latitude, longitude, 5);
-                    } catch (IOException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-                    if (address.size() > 0) {
-                        postCode = address.get(0).getPostalCode();
-                        city = address.get(0).getLocality();
-                        passing.add(postCode); //now using from shared prefs
-                        passing.add(city);
-                        fetchWeatherTask.execute(passing);
-
-                    }
-
-                }}
-                else
-                {
-                    passing.add(postCode); //now using from shared prefs
-                    passing.add(city);
-                    fetchWeatherTask.execute(passing);
-                }
-                return true;
+                weatherUpdate();
             }
             default:
                 break;
         }
 
         return false;
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        weatherUpdate();
+    }
+    private void weatherUpdate() {
+        FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
+
+        GPSTracker gps = new GPSTracker(getActivity());
+        double latitude = gps.getLatitude();
+        double longitude = gps.getLongitude();
+
+        ArrayList<String> passing = new ArrayList<String>();
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String postCode = sharedPref.getString("postCode", "");
+        String city = sharedPref.getString("city", "");
+        Geocoder geoCoder = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
+        List<Address> address = null;
+        if(city == "" || postCode == ""){
+            if (geoCoder != null) {
+                try {
+                    address = geoCoder.getFromLocation(latitude, longitude, 5);
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+                if (address.size() > 0) {
+                    postCode = address.get(0).getPostalCode();
+                    city = address.get(0).getLocality();
+                    passing.add(postCode); //now using from shared prefs
+                    passing.add(city);
+                    fetchWeatherTask.execute(passing);
+
+                }
+
+            }}
+        else
+        {
+            passing.add(postCode); //now using from shared prefs
+            passing.add(city);
+            fetchWeatherTask.execute(passing);
+        }
     }
 }
 
