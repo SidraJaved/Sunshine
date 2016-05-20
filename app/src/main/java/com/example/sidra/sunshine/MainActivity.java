@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_settings) {
             Intent i = new Intent(this, SettingsActivity.class);
-            startActivity(i);
+            startActivityForResult(i,1);
             return true;
         }
         return super.onOptionsItemSelected(item);
