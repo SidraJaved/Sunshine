@@ -1,18 +1,21 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
-    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+
     <PreferenceCategory
         android:title="Your location"
         android:key="location_settings">
-    <EditTextPreference
-        android:defaultValue="44000"
-        android:inputType="number"
-        android:key="location"
-        android:selectAllOnFocus="true"
-        android:title="Location" />
+        <EditTextPreference
+            android:defaultValue=""
+            android:inputType="number"
+            android:key="postCode"
+            android:selectAllOnFocus="true"
+            android:title="Post Code" />
+        <EditTextPreference
+            android:defaultValue=""
+            android:inputType="text"
+            android:key="city"
+            android:selectAllOnFocus="true"
+            android:title="City" />
     </PreferenceCategory>
 
-
 </PreferenceScreen>
-
 

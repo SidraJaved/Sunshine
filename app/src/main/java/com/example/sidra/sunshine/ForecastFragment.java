@@ -1,9 +1,11 @@
 package com.example.sidra.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.format.Time;
@@ -42,7 +44,10 @@ public class ForecastFragment extends Fragment {
     GPSTracker gps;
     double latitude;
     double longitude;
+    private static SharedPreferences sharedPreferences ;
+    private static final int PREFERENCE_MODE = 0;
     public static ArrayAdapter<String> arrayAdapter;
+
 
     public ForecastFragment() {
     }
@@ -77,20 +82,24 @@ public class ForecastFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.forecast_fragment, menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh: {
                 FetchWeatherTask fetchWeatherTask = new FetchWeatherTask();
+
                 GPSTracker gps = new GPSTracker(getActivity());
                 double latitude = gps.getLatitude();
                 double longitude = gps.getLongitude();
-                String receivePostCode = "";
-                String country = "";
-                ArrayList<String> passing = new ArrayList<String>();
 
+                ArrayList<String> passing = new ArrayList<String>();
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String postCode = sharedPref.getString("postCode", "");
+                String city = sharedPref.getString("city", "");
                 Geocoder geoCoder = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
                 List<Address> address = null;
+                if(city == "" || postCode == ""){
                 if (geoCoder != null) {
                     try {
                         address = geoCoder.getFromLocation(latitude, longitude, 5);
@@ -99,21 +108,20 @@ public class ForecastFragment extends Fragment {
                         e1.printStackTrace();
                     }
                     if (address.size() > 0) {
-                        receivePostCode = address.get(0).getPostalCode();
-                      //  Log.v("Address",address.get(0).getAddressLine(0));
-                      //  Log.v("Address",address.get(1).getAddressLine(0));
-                      //  Log.v("Address",address.get(2).getAddressLine(0));
-                      //  Log.v("Address",address.get(3).getAddressLine(0));
-                      //  Log.v("Address",address.get(4).getAddressLine(0));
-
-
-                        country = address.get(0).getCountryName();
-                        passing.add(receivePostCode);
-                        passing.add(country);
+                        postCode = address.get(0).getPostalCode();
+                        city = address.get(0).getLocality();
+                        passing.add(postCode); //now using from shared prefs
+                        passing.add(city);
                         fetchWeatherTask.execute(passing);
 
                     }
 
+                }}
+                else
+                {
+                    passing.add(postCode); //now using from shared prefs
+                    passing.add(city);
+                    fetchWeatherTask.execute(passing);
                 }
                 return true;
             }

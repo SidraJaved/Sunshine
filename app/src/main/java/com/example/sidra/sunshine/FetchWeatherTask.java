@@ -1,8 +1,12 @@
 package com.example.sidra.sunshine;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,6 +25,7 @@ import com.example.sidra.sunshine.ForecastFragment;
 public class FetchWeatherTask extends AsyncTask<ArrayList<String>, Void, String[]> {
 
     String[] resultStrs;
+    private static final int PREFERENCE_MODE_PRIVATE = 0;
     private String getReadableDateString(long time){
         // Because the API returns a unix timestamp (measured in seconds),
         // it must be converted to milliseconds in order to be converted to valid date.
@@ -173,6 +178,8 @@ public class FetchWeatherTask extends AsyncTask<ArrayList<String>, Void, String[
         }
         return new String[0];
     }
+
+
 
     @Override
     protected void onPostExecute(String[] strings) {
