@@ -109,6 +109,7 @@ public class ForecastFragment extends Fragment {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String postCode = sharedPref.getString("postCode", "");
         String city = sharedPref.getString("city", "");
+        String tempUnits = sharedPref.getString("temperature","");
         Geocoder geoCoder = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
         List<Address> address = null;
         if(city == "" || postCode == ""){
@@ -124,6 +125,7 @@ public class ForecastFragment extends Fragment {
                     city = address.get(0).getLocality();
                     passing.add(postCode); //now using from shared prefs
                     passing.add(city);
+                    passing.add(tempUnits);
                     fetchWeatherTask.execute(passing);
 
                 }
@@ -133,6 +135,7 @@ public class ForecastFragment extends Fragment {
         {
             passing.add(postCode); //now using from shared prefs
             passing.add(city);
+            passing.add(tempUnits);
             fetchWeatherTask.execute(passing);
         }
     }

@@ -1,20 +1,33 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="Your location"
+        android:title="Location Settings"
         android:key="location_settings">
         <EditTextPreference
             android:defaultValue=""
             android:inputType="number"
             android:key="postCode"
             android:selectAllOnFocus="true"
+            android:summary="Post code for weather updates"
             android:title="Post Code" />
         <EditTextPreference
             android:defaultValue=""
             android:inputType="text"
             android:key="city"
             android:selectAllOnFocus="true"
+            android:summary="City for weather updates"
             android:title="City" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Temperature Settings">
+        <ListPreference
+            android:key="temperature"
+            android:title="Temperature Units"
+            android:summary="Imperial or Metrics Unit for temperature"
+            android:entries="@array/listentries"
+            android:entryValues="@array/listvalues"
+            android:defaultValue="metric"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
