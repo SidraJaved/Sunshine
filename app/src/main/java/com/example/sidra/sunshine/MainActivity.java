@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         GPSTracker gps = new GPSTracker(getApplicationContext());
         long latitude = (long) gps.getLatitude();
         long longitude = (long) gps.getLongitude();
-
         Uri gmmIntentUri = Uri.parse("geo:0,0?q="+latitude+","+longitude);//.buildUpon().appendQueryParameter("latitude",postCode).build();
         //q="+latitude+","+longitude+"(Your location)");
         Intent mapIntent = new Intent(Intent.ACTION_VIEW);
