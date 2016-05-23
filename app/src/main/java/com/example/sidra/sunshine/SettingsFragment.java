@@ -30,12 +30,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals("temperature")){
-                        Toast.makeText(getActivity(),"Temperature unit changing...",
-                                Toast.LENGTH_SHORT).show();
-        }
+//                        Toast.makeText(getActivity(),"Temperature unit changing...",
+//                                Toast.LENGTH_SHORT).show();
+       }
         else if(key.equals("city")){
-            Toast.makeText(getActivity(),"City changing...",
-                    Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(),"City changing...",
+//                    Toast.LENGTH_SHORT).show();
 //            EditTextPreference editTextPreference = (EditTextPreference)  getPreferenceScreen().findPreference("city");
 //            editTextPreference.setSummary("Cityyyyyyyyyyyyyyyyyyyyyyyyy");
         }

@@ -8,4 +8,8 @@
         android:title="@string/action_settings"
         android:icon="@android:drawable/ic_menu_preferences"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_map_location"
+        android:title="@string/action_map_location"
+        app:showAsAction="never" />
 </menu>

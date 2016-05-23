@@ -1,10 +1,11 @@
 package com.example.sidra.sunshine;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -40,6 +41,30 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(i,1);
             return true;
         }
+        if(id == R.id.action_map_location) {
+            locationOnMap();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void locationOnMap() {
+
+        GPSTracker gps = new GPSTracker(getApplicationContext());
+        long latitude = (long) gps.getLatitude();
+        long longitude = (long) gps.getLongitude();
+
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q="+latitude+","+longitude);//.buildUpon().appendQueryParameter("latitude",postCode).build();
+        //q="+latitude+","+longitude+"(Your location)");
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW);
+        mapIntent.setData(gmmIntentUri);
+
+        //   mapIntent.setPackage("com.google.android.apps.maps");
+        if (mapIntent.resolveActivity(getPackageManager())!= null) {
+            startActivity(mapIntent);
+        }
+        else{
+            Log.v("Intent resolution error","No application supporting map view");
+        }
     }
 }
